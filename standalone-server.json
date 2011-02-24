@@ -1,3 +1,11 @@
 {
-    "run_list": [ "apache2", "mysql::server" ]
+    /**
+     * A list of cookbooks / recipies to be run when setting up a
+     * new standalone application server.
+     */
+    "run_list": [
+        "apache2",
+        "mysql",
+        "mysql::server"
+    ]
 }
