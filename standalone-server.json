@@ -4,6 +4,7 @@
      * new standalone application server.
      */
     "run_list": [
+        "openssl",
         "apache2",
         "mysql",
         "mysql::server"
