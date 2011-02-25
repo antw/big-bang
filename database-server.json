@@ -6,6 +6,7 @@
     "run_list": [
         "openssl",
         "mysql",
-        "mysql::server"
+        "mysql::server",
+        "memcached"
     ]
 }
