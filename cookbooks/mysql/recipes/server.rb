@@ -19,34 +19,31 @@
 
 include_recipe "mysql::client"
 
-case node[:platform]
-when "debian","ubuntu"
+directory "/var/cache/local/preseeding" do
+  owner "root"
+  group "root"
+  mode 0755
+  recursive true
+end
 
-  directory "/var/cache/local/preseeding" do
-    owner "root"
-    group "root"
-    mode 0755
-    recursive true
-  end
+execute "preseed mysql-server" do
+  command "debconf-set-selections /var/cache/local/preseeding/mysql-server.seed"
+  action :nothing
+end
 
-  execute "preseed mysql-server" do
-    command "debconf-set-selections /var/cache/local/preseeding/mysql-server.seed"
-    action :nothing
-  end
+template "/var/cache/local/preseeding/mysql-server.seed" do
+  source "mysql-server.seed.erb"
+  owner "root"
+  group "root"
+  mode "0600"
+  notifies :run, resources(:execute => "preseed mysql-server"), :immediately
+end
 
-  template "/var/cache/local/preseeding/mysql-server.seed" do
-    source "mysql-server.seed.erb"
-    owner "root"
-    group "root"
-    mode "0600"
-    notifies :run, resources(:execute => "preseed mysql-server"), :immediately
-  end
-  template "/etc/mysql/debian.cnf" do
-    source "debian.cnf.erb"
-    owner "root"
-    group "root"
-    mode "0600"
-  end
+template "/etc/mysql/debian.cnf" do
+  source "debian.cnf.erb"
+  owner "root"
+  group "root"
+  mode "0600"
 end
 
 package "mysql-server" do
@@ -54,7 +51,7 @@ package "mysql-server" do
 end
 
 service "mysql" do
-  service_name value_for_platform([ "centos", "redhat", "suse", "fedora" ] => {"default" => "mysqld"}, "default" => "mysql")
+  service_name "mysql"
   if (platform?("ubuntu") && node.platform_version.to_f >= 10.04)
     restart_command "restart mysql"
     stop_command "stop mysql"
@@ -64,7 +61,7 @@ service "mysql" do
   action :nothing
 end
 
-template value_for_platform([ "centos", "redhat", "suse" , "fedora" ] => {"default" => "/etc/my.cnf"}, "default" => "/etc/mysql/my.cnf") do
+template "/etc/mysql/my.cnf" do
   source "my.cnf.erb"
   owner "root"
   group "root"
@@ -81,22 +78,7 @@ unless Chef::Config[:solo]
   end
 end
 
-# set the root password on platforms 
-# that don't support pre-seeding
-unless %w{debian ubuntu}.include?(node[:platform])
-  execute "assign-root-password" do
-    command "/usr/bin/mysqladmin -u root password #{node[:mysql][:server_root_password]}"
-    action :run
-    only_if "/usr/bin/mysql -u root -e 'show databases;'"
-  end
-end
-
-grants_path = value_for_platform(
-  ["centos", "redhat", "suse", "fedora" ] => {
-    "default" => "/etc/mysql_grants.sql"
-  },
-  "default" => "/etc/mysql/grants.sql"
-)
+grants_path = "/etc/mysql/grants.sql"
 
 begin
   t = resources(:template => "/etc/mysql/grants.sql")
