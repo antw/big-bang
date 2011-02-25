@@ -26,11 +26,11 @@ if ruby_version.size > 0
     #notifies :restart, "service[chef-client]"
   end
 
-  gem_package "chef" do
-    gem_binary "/usr/local/bin/rvm-gem.sh"
-    only_if "test -e /usr/local/bin/rvm-gem.sh"
+  #gem_package "chef" do
+    #gem_binary "/usr/local/bin/rvm-gem.sh"
+    #only_if "test -e /usr/local/bin/rvm-gem.sh"
     # re-install the chef gem into rvm to enable subsequent chef-client run
-  end
+  #end
 
 else
 
