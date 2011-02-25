@@ -6,7 +6,6 @@
     "run_list": [
         "openssl",
         "apache2",
-        "mysql::client",
         "rvm::ree"
     ]
 }
