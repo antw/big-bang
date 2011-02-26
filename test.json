@@ -1,0 +1,21 @@
+{
+    /**
+     * A list of cookbooks / recipies to be run when setting up a
+     * new standalone application server.
+     */
+    "run_list": [
+        "sudoers"
+    ],
+
+    /**
+     * Server-specific settings.
+     */
+    "default": {
+        /**
+         * Users to be added to the sudoers file.
+         */
+        "sudoers": {
+            "users": [ "antw" ]
+        }
+    }
+}
