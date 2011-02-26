@@ -10,7 +10,7 @@
     /**
      * Server-specific settings.
      */
-    "default": {
+    "normal": {
         /**
          * Users to be added to the sudoers file.
          */
