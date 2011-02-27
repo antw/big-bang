@@ -1,0 +1,6 @@
+maintainer       'Anthony Williams'
+maintainer_email 'hi@antw.me'
+license          'BSD License'
+description      'Adds users to the sudoers file'
+recipe           'sudoers', 'Adds users to the sudoers file'
+supports         'ubuntu'
