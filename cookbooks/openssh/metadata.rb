@@ -1,0 +1,6 @@
+maintainer       'Anthony Williams'
+maintainer_email 'hi@antw.me'
+license          'BSD License'
+description      'Updates and configures OpenSSH'
+recipe           'openssh', 'Updates and configures OpenSSH'
+supports         'ubuntu'
