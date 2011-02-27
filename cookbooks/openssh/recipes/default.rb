@@ -19,7 +19,7 @@ template '/etc/ssh/sshd_config' do
   group  'root'
 
   variables :port          => node[:openssh][:port],
-            :disable_root  => node[:openssh][:disable_root],
+            :permit_root   => node[:openssh][:permit_root],
             :password_auth => node[:openssh][:password_auth]
 end
 
